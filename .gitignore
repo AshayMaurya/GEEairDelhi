@@ -1,1 +1,5 @@
 .venv
+outputs/
+__pycache__/
+EXECUTION_PLAN.md
+update_notebook.py

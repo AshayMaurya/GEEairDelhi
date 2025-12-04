@@ -58,7 +58,7 @@ class CompleteAnalysis:
         # Initialize other components
         # Initialize other components
         self.preprocessor = DataPreprocessor(FEATURE_CONFIG)
-        self.visualizer = Visualizer()
+        self.visualizer = Visualizer(VIS_CONFIG)
         self.mapper = SpatialMapper(self.fetcher, REGION_CONFIG, POLLUTANTS)
         
         # Set pixel density from config

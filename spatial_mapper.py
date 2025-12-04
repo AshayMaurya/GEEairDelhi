@@ -30,6 +30,10 @@ class SpatialMapper:
         self.fetcher = fetcher
         self.region_config = region_config
         self.pollutants_config = pollutants_config
+        
+        # Ensure region is loaded
+        if fetcher.region is None:
+            fetcher.load_region()
         self.region = fetcher.region
         
     def set_pixel_density(self, density):
@@ -82,7 +86,11 @@ class SpatialMapper:
             .filterBounds(self.region)
         
         # Get mean image
+        # Get mean image
         image = collection.mean().clip(self.region.geometry())
+        
+        # Reproject to specified pixel density to ensure pixelated look
+        image = image.reproject(crs='EPSG:4326', scale=PIXEL_DENSITY)
         
         # Create base map
         center = self.region_config['center_coords'][::-1]  # [lat, lon]
@@ -169,7 +177,11 @@ class SpatialMapper:
             .filterBounds(self.region)
         
         # Get mean image
+        # Get mean image
         image = collection.mean().clip(self.region.geometry())
+        
+        # Reproject to specified pixel density to ensure pixelated look
+        image = image.reproject(crs='EPSG:4326', scale=PIXEL_DENSITY)
         
         # Get visualization parameters
         vis_params = config['vis_params'].copy()
@@ -282,6 +294,9 @@ class SpatialMapper:
                 .filterBounds(self.region)
             
             image = collection.mean().clip(self.region.geometry())
+            
+            # Reproject to specified pixel density to ensure pixelated look
+            image = image.reproject(crs='EPSG:4326', scale=PIXEL_DENSITY)
             
             # Visualization parameters
             vis_params = config['vis_params'].copy()
